@@ -26,7 +26,7 @@ const cookieSession = require('cookie-session')
           synchronize: true,
           entities: [User,Report]
         }
-      }
+      } 
     }),
 
   //   TypeOrmModule.forRoot({
@@ -47,9 +47,13 @@ controllers: [AppController],
   }],
 })
 export class AppModule {
+
+  constructor(private configService: ConfigService) {
+
+  }
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(cookieSession({
-      keys: ['hello world']
+      keys: [this.configService.get('COOKIE_KEY')]
     })).forRoutes('*')
   }
 }
